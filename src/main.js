@@ -5,11 +5,13 @@ import router from './router'
 import store from './store'
 import Layout from './components/layout'
 import VueResource from 'vue-resource'
+import CookieUtil from './assets/js/cookie.js'
 
 
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
+Vue.use(CookieUtil)
 
 
 /* eslint-disable no-new */

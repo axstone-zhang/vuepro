@@ -7,11 +7,13 @@
         </router-link>
         <div class="head-nav">
           <ul class="nav-list">
-            <li>登录</li>
+            <li v-if="logined"> {{username}} </li>
+            <li v-if="!logined" @click="loginClick">登录</li>
             <li class="nav-pile">|</li>
-            <li>注册</li>
+            <li v-if="logined" @click="quitClick"> 退出 </li>
+            <li v-if="!logined" @click="regClick">注册</li>
             <li class="nav-pile">|</li>
-            <li>关于</li>
+            <li @click="aboutClick">关于</li>
           </ul>
         </div>  
       </div>
@@ -24,12 +26,74 @@
     <div class="app-foot">
       <p>© 2017 axstone</p>
     </div>
+    <my-dialog :is-show="isShowLoginDialog" @on-close="closeDialog('isShowLoginDialog')">
+        <log-form @has-log="onSuccessLog"></log-form>
+    </my-dialog>
+    <my-dialog :is-show="isShowRegDialog" @on-close="closeDialog('isShowRegDialog')">
+        <reg-form></reg-form>
+    </my-dialog>
+    <my-dialog :is-show="isShowAboutDialog" @on-close="closeDialog('isShowAboutDialog')">
+        <p>other about</p>
+    </my-dialog>
   </div>
 </template>
 
 
 <script>
-
+import Vue from 'vue'
+import Dialog from './dialog'
+import LogForm from './logForm'
+import RegFrom from './regForm'
+export default {
+    components: {
+        MyDialog: Dialog,
+        LogForm, 
+        RegFrom
+    },
+    data () {
+        return {
+            isShowLoginDialog: false,
+            isShowRegDialog: false,
+            isShowAboutDialog: false,
+            username: '',
+            logined: false,
+        }
+    },
+    created () {
+        let name = Vue.getCookie('username')
+        if(name){
+            this.logined = true
+            this.username = name
+        }
+    },
+    mounted () {
+        
+    },
+    methods: {
+        loginClick () {
+            this.isShowLoginDialog = true
+        },
+        regClick () {
+            this.isShowRegDialog = true
+        },
+        aboutClick () {
+            this.isShowAboutDialog = true
+        },
+        closeDialog (attr){
+            this[attr] = false
+        },
+        onSuccessLog (data) {
+            console.log(data)
+            this.logined = true
+            this.closeDialog('isShowLoginDialog')
+            this.username = data.username
+            Vue.setCookie('username', data.username)
+        },
+        quitClick () {
+            this.logined = false
+        }
+    }
+}
 </script>
 
 <style>
