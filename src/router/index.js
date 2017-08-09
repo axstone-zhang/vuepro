@@ -7,6 +7,7 @@ import ForecastPage from '@/pages/detial/forecast'
 import CountPage from '@/pages/detial/count'
 import PublishPage from '@/pages/detial/publish'
 import AnalysisPage from '@/pages/detial/analysis'
+import OrderList from '@/pages/orderList'
 
 Vue.use(VueRouter)
 
@@ -16,7 +17,8 @@ export default  new VueRouter({
 		{
 			path: '/',
 			component: IndexPage
-		},{
+		},
+		{
 			path: '/detial',
 			component: DetialPage,
 			redirect: '/detial/analysis',
@@ -38,6 +40,10 @@ export default  new VueRouter({
 					component: AnalysisPage
 				}
 			]
+		},
+		{
+			path: '/orderList',
+			component: OrderList
 		}
 		
 	]

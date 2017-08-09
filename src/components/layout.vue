@@ -41,7 +41,7 @@
 
 <script>
 import Vue from 'vue'
-import Dialog from './dialog'
+import Dialog from './base/dialog'
 import LogForm from './logForm'
 import RegFrom from './regForm'
 export default {
