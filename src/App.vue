@@ -1,30 +1,99 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
-    {{ hello }}
+  <div id="App">
+    <div class="app-head">
+      <div class="app-head-inner">
+        <router-link :to="{path: '/'}">
+          <img src="assets/logo.png">
+        </router-link>
+        <div class="head-nav">
+          <ul class="nav-list">
+            <li v-if="logined"> {{username}} </li>
+            <li v-if="!logined" @click="loginClick">登录</li>
+            <li class="nav-pile">|</li>
+            <li v-if="logined" @click="quitClick"> 退出 </li>
+            <li v-if="!logined" @click="regClick">注册</li>
+            <li class="nav-pile">|</li>
+            <li @click="aboutClick">关于</li>
+          </ul>
+        </div>  
+      </div>
+    </div>
+    <div class="container">
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </div>
+    <div class="app-foot">
+      <p>© 2017 axstone</p>
+    </div>
+    <my-dialog :is-show="isShowLoginDialog" @on-close="closeDialog('isShowLoginDialog')">
+        <log-form @has-log="onSuccessLog"></log-form>
+    </my-dialog>
+    <my-dialog :is-show="isShowRegDialog" @on-close="closeDialog('isShowRegDialog')">
+        <reg-form></reg-form>
+    </my-dialog>
+    <my-dialog :is-show="isShowAboutDialog" @on-close="closeDialog('isShowAboutDialog')">
+        <p>other about</p>
+    </my-dialog>
   </div>
 </template>
 
+
 <script>
+import Vue from 'vue'
+import Dialog from 'components/base/dialog'
+import LogForm from 'components/logForm'
+import RegFrom from 'components/regForm'
 export default {
+    components: {
+        MyDialog: Dialog,
+        LogForm, 
+        RegFrom
+    },
     data () {
         return {
-            hello: 'world',
-            List: [
-                {
-                    name: 'zhangsan',
-                    color: 'green'
-                },
-                {
-                    name: 'lisi',
-                    color: 'orange'
-                }
-            ]
+            isShowLoginDialog: false,
+            isShowRegDialog: false,
+            isShowAboutDialog: false,
+            username: '',
+            logined: false,
+        }
+    },
+    created () {
+        let name = Vue.getCookie('username')
+        if(name){
+            this.logined = true
+            this.username = name
+        }
+    },
+    mounted () {
+        
+    },
+    methods: {
+        loginClick () {
+            this.isShowLoginDialog = true
+        },
+        regClick () {
+            this.isShowRegDialog = true
+        },
+        aboutClick () {
+            this.isShowAboutDialog = true
+        },
+        closeDialog (attr){
+            this[attr] = false
+        },
+        onSuccessLog (data) {
+            console.log(data)
+            this.logined = true
+            this.closeDialog('isShowLoginDialog')
+            this.username = data.username
+            Vue.setCookie('username', data.username)
+        },
+        quitClick () {
+            this.logined = false
         }
     }
 }
-
 </script>
 
 <style>
@@ -99,10 +168,10 @@ body {
 }
 .head-logo {
   float: left;
-  margin-top: 20px;
 }
-.head-logo img {
+.app-head-inner img {
   width: 50px;
+  margin-top: 20px;
 }
 .head-nav {
   float: right;
@@ -170,5 +239,8 @@ body {
 .g-form-btn {
   padding-left: 100px;
 }
+.g-form-error {
+  color: red;
+  padding-left: 15px;
+}
 </style>
-
