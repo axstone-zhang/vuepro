@@ -41,9 +41,9 @@
 
 <script>
 import Vue from 'vue'
-import Dialog from 'components/base/dialog'
-import LogForm from 'components/logForm'
-import RegFrom from 'components/regForm'
+import Dialog from './components/base/dialog'
+import LogForm from './components/logForm'
+import RegFrom from './components/regForm'
 export default {
     components: {
         MyDialog: Dialog,

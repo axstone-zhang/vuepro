@@ -33,7 +33,7 @@
 						<h2>{{ item.title }}</h2>
 						<p>{{ item.description }}</p>
 						<div class="index-board-button">
-							<a :href="item.href" class="button">立即购买</a>
+							<router-link  class="button" :to ="{path: 'detial/' + item.toKey}">立即购买</router-link>
 						</div>
 					</div>
 				</div>
